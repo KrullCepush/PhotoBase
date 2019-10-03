@@ -1,0 +1,46 @@
+<div class="container">
+    <section class="profile-header">
+        <div class="row">
+            <button id="profile-add"
+                class="btn-form col xl1 btn-floating btn-large waves-effect waves-light red">+</button>
+            <div class="profile-log col xl2 offset-xl1"> {{user.name}} </div>
+            <a href="/profile/friends" class="center-align profile-friends col xl1 offset-xl6"><span>Friends</span> </a>
+        </div>
+    </section>
+
+    <div id="profile-add__form" class="wrap none">
+        <form action="/users/profile" method="post" enctype="multipart/form-data">
+            <input class="bg-dark" type="text" name="photoName" placeholder="Заголовок к фото" required>
+            <input class="bg-dark" type="text" name="description" placeholder="Описание к фото" required>
+            <input class="" type="file" name="avatar" required>
+            <button class="btn waves-effect waves-light" type="submit">Send &#9658;</button>
+        </form>
+    </div>
+    <section class="gallery">
+        <div class="row">
+            {{#each user}}
+            <div class="col xl4">
+                <div class="wrap-img">
+                    <a href="/users/profile/{{this._id}} "><img class="gallery__img img" src="/{{this.photoImage}}"
+                            alt="pic" data-description=" {{this.description}} "></a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+</div>
+
+
+<script>
+    const btn = document.getElementById("profile-add");
+    const btnActiveForm = document.getElementById("profile-add__form");
+    btn.addEventListener("click", () => {
+        console.log(btnActiveForm.classList)
+        btnActiveForm.classList.toggle("none");
+        if (btnActiveForm.classList.length < 2)
+            btn.innerText = "-"
+        else {
+            btn.innerText = "+"
+        }
+    });
+</script>

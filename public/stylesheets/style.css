@@ -1,0 +1,171 @@
+body {
+  position: relative;
+  min-height: 99vh;
+}
+
+.container-body {
+  background: url(https://avatars.mds.yandex.net/get-pdb/992060/bd75e0fc-9c3c-4e6b-b4d9-9b19a269b54b/s1200?webp=false)
+    no-repeat;
+  background-size: 100%;
+  min-height: 83vh;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: #000 !important;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  box-sizing: border-box;
+  border-bottom: 4px solid orange;
+  font-family: "Mansalva", cursive;
+  background-color: #f7f7f7;
+}
+
+.header .container {
+  padding: 10px;
+}
+
+.footer {
+  display: block;
+  margin-top: 3vh;
+  font-family: "Mansalva", cursive;
+  background-color: #f7f7f7;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  min-height: 10vh;
+  /* Убери потом этот код */
+  box-sizing: border-box;
+  padding-top: 20px;
+  font-size: 40px;
+  text-align: center;
+}
+
+.nav__link {
+  margin-top: 5px;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+  font-size: 30px;
+  color: #ee6e73 !important;
+}
+
+.nav__link:hover {
+  background-color: #5a2a5a;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.nav__logo {
+  padding: 15px 0 !important;
+  font-size: 50px;
+  color: #ee6e73 !important;
+}
+
+.img-padding {
+  padding: 20px;
+}
+
+.none {
+  display: none;
+}
+
+.profile-header {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  box-sizing: border-box;
+  font-family: "Mansalva", cursive;
+}
+
+.profile-friends {
+  font-size: 40px;
+  color: #ee6e73 !important;
+  padding: 10px !important;
+}
+
+.profile-friends span:hover {
+  color: #fd0526 !important;
+  box-sizing: border-box;
+  box-shadow: 0 0 30px 15px #fd0526;
+  border-radius: 30px;
+  padding: 10px;
+}
+
+.bg-dark {
+  background-color: rgba(70, 66, 66, 0.8) !important;
+  box-sizing: border-box;
+  padding-left: 40px !important;
+}
+
+::-webkit-input-placeholder {
+  color: #aef823;
+  opacity: 1;
+} /* webkit */
+::-moz-placeholder {
+  color: #aef823;
+  opacity: 1;
+} /* Firefox 19+ */
+:-moz-placeholder {
+  color: #aef823;
+  opacity: 1;
+} /* Firefox 18- */
+:-ms-input-placeholder {
+  color: #aef823;
+  opacity: 1;
+} /* IE */
+
+#profile-add {
+  font-size: 30px;
+}
+
+.gallery {
+  padding: 40px 0;
+}
+
+.wrap-img {
+  position: relative;
+  padding: 10px;
+  width: 400px;
+  height: 300px;
+  margin-bottom: 60px;
+  box-sizing: border-box;
+}
+
+.gallery__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 300px;
+  width: 400px;
+  margin-bottom: -10px;
+}
+
+.rediis {
+  position: absolute;
+  z-index: 1;
+  height: 300px;
+  width: 400px;
+  top: 0;
+  left: 0;
+  background: rgba(82, 25, 92, 0.6);
+  padding: 40px;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+}
+
+.photo-img {
+  width: 80%;
+  height: 70%;
+  margin: 0 auto;
+  display: block;
+  padding-top: 30px;
+}
