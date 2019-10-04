@@ -1,7 +1,12 @@
 <div class="container">
     <div class="row">
-        {{#each photo}}
-        <div class="col xl3 img-padding">{{this.images}}</div>
+        {{#each images}}
+        <div class="col xl4">
+            <div class="wrap-img">
+                <a href="/users/photo/{{this._id}} "><img class="gallery__img img" src="/{{this.photoImage}}" alt="pic"
+                        data-description=" {{this.description}} " data-author="{{this.author}}"></a>
+            </div>
+        </div>
         {{/each}}
     </div>
 </div>

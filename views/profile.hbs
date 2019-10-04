@@ -18,11 +18,11 @@
     </div>
     <section class="gallery">
         <div class="row">
-            {{#each currentUser.images}}
+            {{#each images}}
             <div class="col xl4">
                 <div class="wrap-img">
-                    <a href="/users/profile/{{this._id}} "><img class="gallery__img img" src="/{{this.photoImage}}"
-                            alt="pic" data-description=" {{this.description}} "></a>
+                    <a href="/users/photo/{{this._id}} "><img class="gallery__img img" src="/{{this.photoImage}}"
+                            alt="pic" data-description=" {{this.description}} " data-author="{{this.author}}"></a>
                 </div>
             </div>
             {{/each}}

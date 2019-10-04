@@ -48,9 +48,10 @@ addMiddlewares(router);
 router.get("/", async function(req, res, next) {
   console.log("-----------------------------------");
   const img = await Photo.find();
+  console.log(img);
 
   res.render("index", {
-    photo: img,
+    images: img,
     currentUser: getUserNickname(req)
   });
 });
@@ -102,27 +103,30 @@ router
 router
   .route("/profile")
   .get(async (req, res, next) => {
-    const user = await Photo.find(
-      {},
-      { description: 1, photoImage: 1, _id: 1 }
-    );
-    res.render("profile", { user: user });
+    const user = await User.findOne({ username: req.user.username });
+    const img = await Photo.find({ author: req.user.username });
+
+    res.render("profile", { currentUser: user, images: img });
   })
   .post(upload.single("avatar"), async (req, res) => {
+    const user = await User.findOne({ username: req.user.username });
     const photo = new Photo({
       name: req.body.photoName,
       description: req.body.description,
       _id: new mongoose.Types.ObjectId(),
-      photoImage: req.file.path
+      photoImage: req.file.path,
+      author: user.username
     });
-    console.log(photo);
+    user.images.push(photo._id);
+    await user.save();
     await photo.save();
     res.redirect("./profile");
   });
 
-router.route("/profile/:id").get(async (req, res) => {
+router.route("/photo/:id").get(async (req, res) => {
   const photo = await Photo.findById(req.params.id);
-  res.render("photo", { user: photo });
-  console.log("sasasa", photo);
+  console.log("-----", photo);
+
+  res.render("photo", { img: photo });
 });
 module.exports = router;
