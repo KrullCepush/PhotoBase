@@ -3,7 +3,7 @@
         <div class="row">
             <button id="profile-add"
                 class="btn-form col xl1 btn-floating btn-large waves-effect waves-light red">+</button>
-            <div class="profile-log col xl2 offset-xl1"> {{user.name}} </div>
+            <div class="profile-log col xl2 offset-xl1"> {{currentUser.name}} </div>
             <a href="/profile/friends" class="center-align profile-friends col xl1 offset-xl6"><span>Friends</span> </a>
         </div>
     </section>
@@ -18,7 +18,7 @@
     </div>
     <section class="gallery">
         <div class="row">
-            {{#each user}}
+            {{#each currentUser.images}}
             <div class="col xl4">
                 <div class="wrap-img">
                     <a href="/users/profile/{{this._id}} "><img class="gallery__img img" src="/{{this.photoImage}}"

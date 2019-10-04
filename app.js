@@ -5,11 +5,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
-const bcrypt = require("bcrypt");
 
-const indexRouter = require("./routes/index");
+const indexRouter = require("./routes/users");
 const usersRouter = require("./routes/users");
 
 const upload = multer({ dest: "uploads/" });
@@ -36,25 +33,11 @@ app.use(
     }
   })
 );
+
 app.use(express.json());
 app.use("/uploads/", express.static("uploads"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use(
-  session({
-    store: new MongoStore({
-      url: "mongodb://localhost:27017/photoBase",
-      stringify: false
-    }),
-    cookie: {
-      maxAge: 24 * 360000
-    },
-    secret: "photo-01-log-collection",
-    resave: true,
-    saveUninitialized: false
-  })
-);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "uploads")));
