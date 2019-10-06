@@ -1,4 +1,42 @@
 <div class="container">
-    <img class="photo-img" src="/{{img.photoImage}}" alt="pic" data-description=" {{img.description}} "
-        data-author="{{img.author}}">
+    <div class="photo-img">
+        <img class="photo-img__img" src="/{{img.photoImage}}" alt="pic" data-description=" {{img.description}} "
+            data-author="{{img.author}}">
+        <div class="photo-img__a-side">
+            <div class="wrap">
+                <div class="wrap__desc">
+                    Author: {{img.author}}
+                </div>
+                <div class="wrap__desc">
+                    {{img.description}}
+                </div>
+                {{#if currentUser}}
+                <div class="wrap__like">
+                    <img id="like" src="/images/icons/like.png" alt="like">
+                    <div class="like-counter">{{likeCounter}}</div>
+                </div>
+                <div class="wrap__like">
+                    <img id="comments" class="counter-comments" src="/images/icons/comment.png" alt="comment">
+                    <div class="comment-counter" id="commentCounter">{{commentCounter}}</div>
+                </div>
+                {{else}}
+                <div class="wrap__like">
+                    <img src="/images/icons/like.png" alt="like">
+                    <div class="like-counter" id="likeCounter">{{likeCounter}}</div>
+                </div>
+                <div class="wrap__like">
+                    <img src="/images/icons/comment.png" alt="comment">
+                    <div class="like-counter" id="commentCounter">{{commentCounter}}</div>
+                </div>
+                {{/if}}
+                <div class="wrap-comments">
+                    {{#each img.commentUsers}}
+                    <div class="wrap-comments__comment"> {{this.name}}: {{this.comment}} </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>

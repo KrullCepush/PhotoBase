@@ -4,7 +4,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const multer = require("multer");
-const Photo = require("../models/phohSchema");
+const Photo = require("../models/photoSchema");
 const addMiddlewares = require("../middleware/passport-config");
 const homePageWithNotification = require("../helpers/homePageWithNotification");
 const { getUserNickname } = require("../helpers/reqHelpers");
@@ -48,7 +48,6 @@ addMiddlewares(router);
 router.get("/", async function(req, res, next) {
   console.log("-----------------------------------");
   const img = await Photo.find();
-  console.log(img);
 
   res.render("index", {
     images: img,
@@ -58,17 +57,19 @@ router.get("/", async function(req, res, next) {
 
 router
   .route("/login")
-  .get((req, res) => {
+  .get(notAuthenticationMiddleware(), (req, res) => {
     res.render("login");
   })
-  .post((req, res, next) => {
-    passport.authenticate("local", (err, user, next) => {
+  .post(notAuthenticationMiddleware(), (req, res, next) => {
+    passport.authenticate("local", (err, user) => {
       if (err) {
-        return res.json({ err: "ошибка" });
+        return res.render("login", { status: "Неправильный логин или пароль" });
       }
       req.logIn(user, err => {
         if (err) {
-          return res.json({ err: "ошибка" });
+          return res.render("login", {
+            status: "Неправильный логин или пароль"
+          });
         }
         return res.redirect(
           homePageWithNotification(notifications.message, "You Logged In!")
@@ -79,12 +80,11 @@ router
 
 router
   .route("/reg")
-  .get((req, res) => {
+  .get(notAuthenticationMiddleware(), (req, res) => {
     res.render("reg");
   })
-  .post(async (req, res) => {
+  .post(notAuthenticationMiddleware(), async (req, res) => {
     const { username, password } = req.body;
-    console.log(req.body);
 
     const curUser = await User.getByUsername(username);
     if (curUser.length === 0) {
@@ -96,37 +96,85 @@ router
       return res.redirect(homePageWithNotification());
     }
     return res.render("reg", {
-      [notifications.error]: "This username is already used"
+      status: "Имя пользователя уже занято"
     });
   });
 
 router
   .route("/profile")
-  .get(async (req, res, next) => {
+  .get(authenticationMiddleware(), async (req, res, next) => {
     const user = await User.findOne({ username: req.user.username });
     const img = await Photo.find({ author: req.user.username });
 
     res.render("profile", { currentUser: user, images: img });
   })
-  .post(upload.single("avatar"), async (req, res) => {
-    const user = await User.findOne({ username: req.user.username });
-    const photo = new Photo({
-      name: req.body.photoName,
-      description: req.body.description,
-      _id: new mongoose.Types.ObjectId(),
-      photoImage: req.file.path,
-      author: user.username
+  .post(
+    authenticationMiddleware(),
+    upload.single("avatar"),
+    async (req, res) => {
+      const user = await User.findOne({ username: req.user.username });
+      const photo = new Photo({
+        name: req.body.photoName,
+        description: req.body.description,
+        _id: new mongoose.Types.ObjectId(),
+        photoImage: req.file.path,
+        author: user.username
+      });
+      user.images.push(photo._id);
+      await user.save();
+      await photo.save();
+      res.redirect("./profile");
+    }
+  );
+
+router.route("/logout").get(authenticationMiddleware(), (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
+
+router
+  .route("/photo/:id")
+  .get(async (req, res) => {
+    const photo = await Photo.findById(req.params.id);
+
+    res.render("photo", {
+      img: photo,
+      currentUser: getUserNickname(req),
+      likeCounter: photo.likeUsers.length,
+      commentCounter: photo.commentUsers.length
     });
-    user.images.push(photo._id);
-    await user.save();
-    await photo.save();
-    res.redirect("./profile");
+  })
+  .put(async (req, res) => {
+    const photo = await Photo.findById(req.params.id);
+    const user = await User.findOne({ username: req.user.username });
+    const search = photo.likeUsers.indexOf(user._id);
+    if (search != -1) {
+      photo.likeUsers.splice(search, 1);
+      await photo.save();
+      res.json({ status: "remove" });
+    } else {
+      photo.likeUsers.push(user._id);
+      await photo.save();
+      res.json({ status: "update" });
+    }
   });
 
-router.route("/photo/:id").get(async (req, res) => {
-  const photo = await Photo.findById(req.params.id);
-  console.log("-----", photo);
+function authenticationMiddleware() {
+  return function(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/users/login");
+  };
+}
 
-  res.render("photo", { img: photo });
-});
+function notAuthenticationMiddleware() {
+  return function(req, res, next) {
+    if (!req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect("/");
+  };
+}
+
 module.exports = router;

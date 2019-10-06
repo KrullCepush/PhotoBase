@@ -16,7 +16,7 @@ function addMiddlewares(router) {
       async (username, password, done) => {
         const foundUsers = await User.getByUsername(username);
         if (foundUsers.length === 0) {
-          return res.json({ err: "ошибка" });
+          return done("Error");
         }
         const isPasswordCorrect = await bcrypt.compare(
           password,
@@ -29,7 +29,7 @@ function addMiddlewares(router) {
           };
           return done(null, user);
         }
-        return res.json({ err: "ошибка" });
+        return done("err");
       }
     )
   );

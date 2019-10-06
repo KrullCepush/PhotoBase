@@ -10,8 +10,9 @@
 
     <div id="profile-add__form" class="wrap none">
         <form action="/users/profile" method="post" enctype="multipart/form-data">
-            <input class="bg-dark" type="text" name="photoName" placeholder="Заголовок к фото" required>
-            <input class="bg-dark" type="text" name="description" placeholder="Описание к фото" required>
+            <input class="bg-dark" type="text" maxlength="20" name="photoName" placeholder="Заголовок к фото" required>
+            <input class="bg-dark" type="text" maxlength="140" name="description" placeholder="Описание к фото"
+                required>
             <input class="" type="file" name="avatar" required>
             <button class="btn waves-effect waves-light" type="submit">Send &#9658;</button>
         </form>

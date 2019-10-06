@@ -6,7 +6,13 @@ const photoSchema = mongoose.Schema({
   photoImage: { type: String, required: true },
   description: { type: String, required: true },
   author: { type: String, required: true },
-  comments: { type: String }
+  likeUsers: [],
+  commentUsers: [
+    {
+      name: String,
+      comment: String
+    }
+  ]
 });
 
 module.exports = mongoose.model("Photo", photoSchema);
