@@ -34,6 +34,11 @@
                     <div class="wrap-comments__comment"> {{this.name}}: {{this.comment}} </div>
                     {{/each}}
                 </div>
+                {{#if author}}
+                <div id="photo-delete" class="photo__delete">
+                    Delete
+                </div>
+                {{/if}}
             </div>
         </div>
 

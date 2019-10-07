@@ -136,15 +136,19 @@ router
   .route("/photo/:id")
   .get(async (req, res) => {
     const photo = await Photo.findById(req.params.id);
-
     res.render("photo", {
       img: photo,
+      author: isAuthor(req),
       currentUser: getUserNickname(req),
       likeCounter: photo.likeUsers.length,
       commentCounter: photo.commentUsers.length
     });
+
+    function isAuthor(req) {
+      return req.user && req.user.username === photo.author;
+    }
   })
-  .put(async (req, res) => {
+  .put(authenticationMiddleware(), async (req, res) => {
     const photo = await Photo.findById(req.params.id);
     const user = await User.findOne({ username: req.user.username });
     const search = photo.likeUsers.indexOf(user._id);
@@ -157,7 +161,30 @@ router
       await photo.save();
       res.json({ status: "update" });
     }
+  })
+  .delete(async (req, res) => {
+    const fs = require("fs");
+    const photo = await Photo.findById(req.params.id);
+    if (photo.author === req.user.username) {
+      fs.unlinkSync(photo.photoImage);
+      const user = await User.findOne({
+        username: req.user.username
+      });
+      const imagesFind = user.images.indexOf(req.params.id);
+      user.images.splice(imagesFind, 1);
+      const photoDelete = await Photo.findByIdAndDelete(req.params.id);
+      await user.save();
+      res.json({
+        status: "true"
+      });
+    } else {
+      res.json({
+        status: "false"
+      });
+    }
   });
+
+//-----------------HELPERS--------------//
 
 function authenticationMiddleware() {
   return function(req, res, next) {

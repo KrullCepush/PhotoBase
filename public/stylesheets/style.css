@@ -234,3 +234,22 @@ h1 {
   font-size: 32px;
   font-weight: 800;
 }
+
+.photo__delete {
+  margin-top: 30px;
+  font-size: 24px;
+  font-family: "Mansalva", cursive;
+  padding: 10px;
+  border: 4px solid red;
+  box-sizing: border-box;
+  width: 100px;
+  border-radius: 30px;
+  background-color: rgb(240, 138, 43);
+}
+
+.photo__delete:hover {
+  background-color: rgb(224, 27, 27);
+  box-sizing: border-box;
+
+  border: 4px solid orange;
+}

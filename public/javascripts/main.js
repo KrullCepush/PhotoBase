@@ -1,5 +1,27 @@
 const imgs = document.querySelectorAll(".img");
 const like = document.getElementById("like");
+const deletePhoto = document.getElementById("photo-delete");
+
+if (deletePhoto) {
+  deletePhoto.addEventListener("click", async () => {
+    const param = window.location.pathname;
+
+    const response = await fetch(param, {
+      method: "delete",
+      body: JSON.stringify({ status: "delete" }),
+      headers: {
+        "content-type": "application/json"
+      }
+    });
+    const status = await response.json();
+
+    if (status === "true") {
+      window.location.href = "/users/profile";
+    } else {
+      window.location.href = "/";
+    }
+  });
+}
 
 if (like) {
   like.addEventListener("click", async () => {
